@@ -16,6 +16,7 @@ import { HomePage } from './pages/HomePage/Loadable';
 import { NotFoundPage } from './components/NotFoundPage/Loadable';
 import { useTranslation } from 'react-i18next';
 import { CssVarsProvider } from '@mui/joy/styles';
+import VerifyPage from './pages/VerifyPage';
 
 export function App() {
   const { i18n } = useTranslation();
@@ -36,6 +37,7 @@ export function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="*" element={<NotFoundPage />} />
+          <Route path="/verify" element={<VerifyPage />} />
         </Routes>
         <GlobalStyle />
       </BrowserRouter>

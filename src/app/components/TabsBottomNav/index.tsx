@@ -6,10 +6,20 @@ import TabList from '@mui/joy/TabList';
 import Tab, { tabClasses } from '@mui/joy/Tab';
 import { GppGood } from '@mui/icons-material';
 import BadgeOutlinedIcon from '@mui/icons-material/BadgeOutlined';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export default function TabsBottomNav() {
-  const [index, setIndex] = React.useState(0);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [index, setIndex] = React.useState(location.pathname === '/' ? 0 : 1);
   const colors = ['primary', 'success'] as const;
+  const handleVerifyClick = () => {
+    navigate('/verify');
+  };
+
+  const handleWalletClick = () => {
+    navigate('/');
+  };
   return (
     <Box
       sx={{
@@ -48,20 +58,22 @@ export default function TabsBottomNav() {
           <Tab
             orientation="vertical"
             {...(index === 0 && { variant: 'soft', color: colors[0] })}
+            onClick={handleWalletClick}
           >
             <ListItemDecorator>
               <BadgeOutlinedIcon />
             </ListItemDecorator>
-            My IDs
+            My Wallet
           </Tab>
           <Tab
             orientation="vertical"
             {...(index === 1 && { variant: 'soft', color: colors[1] })}
+            onClick={handleVerifyClick}
           >
             <ListItemDecorator>
               <GppGood />
             </ListItemDecorator>
-            Show
+            Verify
           </Tab>
         </TabList>
       </Tabs>
