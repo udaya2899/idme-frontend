@@ -31,6 +31,7 @@ export default function VerifyPage() {
   return (
     <Box>
       <QrReader
+        constraints={{ facingMode: 'environment' }}
         onResult={(result, error) => {
           if (!!result) {
             setData(result?.text);
