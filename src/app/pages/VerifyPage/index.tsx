@@ -1,10 +1,12 @@
-import { Box } from '@mui/joy';
+import { Box, LinearProgress, Typography } from '@mui/joy';
 import React, { useEffect, useState } from 'react';
 import TabsBottomNav from '../../components/TabsBottomNav';
 import { QrReader } from 'react-qr-reader';
+import TaskAltIcon from '@mui/icons-material/TaskAlt';
 
 export default function VerifyPage() {
   const [data, setData] = useState(undefined);
+  const [idResult, setIdResult] = useState(undefined);
 
   async function verifyCreds(data) {
     console.log('qr scanned');
@@ -18,8 +20,12 @@ export default function VerifyPage() {
         },
       );
 
-      const responseData = await response.json();
-      console.log(responseData);
+      const responseText = await response.text();
+      if (responseText === 'The certificate is verfied') {
+        setIdResult(true);
+      } else {
+        setIdResult(false);
+      }
     }
 
   }
@@ -30,18 +36,26 @@ export default function VerifyPage() {
   return (
     <Box>
       <QrReader
+        style={{
+          padding: 20,
+        }}
         constraints={{ facingMode: 'environment' }}
+        scanDelay={200}
         onResult={(result, error) => {
           if (!!result) {
             setData(result?.text);
           }
-
-          if (!!error) {
-            console.info(error);
-          }
         }}
-        style={{ width: '100%' }}
+        style={{ width: '80%' }}
       />
+
+      {idResult === undefined ? <LinearProgress variant='soft' /> : <span></span>}
+      {idResult === undefined ? <span></span> : idResult === true ?
+        <Typography margin={10} fontWeight='lg' variant='outlined' color='success' startDecorator={<TaskAltIcon />}>Credential
+          verified
+          -
+          Trustable</Typography> :
+        <Typography variant='outlined' color='danger' fontWeight='lg'> Credential could not be verified</Typography>}
       <TabsBottomNav />
     </Box>
   );
