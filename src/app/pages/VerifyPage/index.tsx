@@ -4,25 +4,24 @@ import TabsBottomNav from '../../components/TabsBottomNav';
 import { QrReader } from 'react-qr-reader';
 
 export default function VerifyPage() {
-  const [data, setData] = useState('No result');
+  const [data, setData] = useState(undefined);
 
   async function verifyCreds(data) {
     console.log('qr scanned');
     console.log({ data });
-    const response = await fetch(
-      'http://131.159.209.212:8088/idme/verifier/verify/v1/vp',
-      {
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
+    if (data) {
+      const response = await fetch(
+        'http://131.159.209.212:8088/idme/verifier/verify/v1/vp',
+        {
+          method: 'post',
+          body: JSON.stringify(data),
         },
-        method: 'post',
-        body: JSON.stringify(data),
-      },
-    );
+      );
 
-    const responseData = await response.json();
-    console.log(responseData);
+      const responseData = await response.json();
+      console.log(responseData);
+    }
+
   }
 
   useEffect(() => {
